@@ -4,3 +4,4 @@ I forgot about time constraint.
 11/19/2025
 When using filters on results after groupby, you need to us HAVING.
 
+11/20/2025
