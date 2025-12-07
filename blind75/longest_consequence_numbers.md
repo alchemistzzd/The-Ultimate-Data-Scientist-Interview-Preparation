@@ -17,3 +17,5 @@ def longest_consecutive_sequence(nums):
 Notes:
 1. Sort the array works but it is nlogn
 2. Scan the array and check if i-1 is in, if it is not in then i is the starting of an array. Then check i+1, i+2...and record the length.
+
+To be implemented: https://www.youtube.com/watch?v=HgV209w2iu8
