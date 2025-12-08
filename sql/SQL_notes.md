@@ -16,3 +16,7 @@ SELECT page_id
 FROM page_likes
 order by page_id;
 ```
+
+12/07/2025
+Even though the query is written top-down, SQL actually runs bottom-up according to this logical order
+FROM, WHERE, GROUP BY, HAVING, SELECT
