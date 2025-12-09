@@ -1,7 +1,7 @@
 # K-Nearest Neighbors (kNN)
 
-Type: unsupervised|regression|classification
-Summary: The basic idea is to find the ‘k’ closest data points in the training set to a given test data point and use the labels of those closest points to make a prediction for the test point.
+**Type:**: unsupervised|regression|classification
+**Summary:**: The basic idea is to find the ‘k’ closest data points in the training set to a given test data point and use the labels of those closest points to make a prediction for the test point.
 
 ## Table of contents
 - [When to use](#when-to-use)
