@@ -18,5 +18,15 @@ order by page_id;
 ```
 
 12/07/2025
-Even though the query is written top-down, SQL actually runs bottom-up according to this logical order
+1. Even though the query is written top-down, SQL actually runs bottom-up according to this logical order
 FROM, WHERE, GROUP BY, HAVING, SELECT
+
+2. DATE_PART('year', post_date::DATE) = 2021 
+post_date::DATE casts the timestamp to a date.
+	•	Removes the time component.
+	•	Example: 2021-07-10 12:00:00 → 2021-07-10
+DATE_PART('year', ...) extracts the year from the date.
+
+3. DATE_TRUNC truncates a timestamp or date to a specified precision by setting all lower-order units to zero (or the first day).
+DATE_TRUNC('month', '2022-08-03 15:20:40')
+Output:2022-08-01 00:00:00
