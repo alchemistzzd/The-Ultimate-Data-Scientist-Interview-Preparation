@@ -1,5 +1,13 @@
 ## Supervised vs Unsupervised Learning
 
+## Table of Contents
+- [Definition](#definition)
+- [Core Idea](#core-idea)
+- [When It Applies](#when-it-applies)
+- [Common Misunderstandings](#common-misunderstandings)
+- [How to Remember It](#how-to-remember-it)
+- [Example](#example)
+
 ### Definition
 - **Supervised Learning**: Training data includes input **and labels**.
 - **Unsupervised Learning**: Training data includes only input **without labels**.
