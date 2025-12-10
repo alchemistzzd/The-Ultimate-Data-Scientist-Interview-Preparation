@@ -2,7 +2,7 @@
 I forgot about time constraint.
 
 11/19/2025
-When using filters on results after groupby, you need to us HAVING.
+When using filters on results after groupby, you need to use HAVING.
 
 12/02/2025
 I learned about EXCEPT
@@ -30,3 +30,18 @@ DATE_PART('year', ...) extracts the year from the date.
 3. DATE_TRUNC truncates a timestamp or date to a specified precision by setting all lower-order units to zero (or the first day).
 DATE_TRUNC('month', '2022-08-03 15:20:40')
 Output:2022-08-01 00:00:00
+
+12/09/25
+Assume you're given the tables containing **completed** trade orders and user details in a Robinhood trading system.
+
+Write a query to retrieve the top three cities that have the highest number of completed trade orders listed in descending order. Output the city name and the corresponding number of completed trade orders.
+```sql
+SELECT users.city as city, count(distinct trades.order_id) as total_orders FROM trades
+left join users
+on trades.user_id = users.user_id
+where trades.status = 'Completed'
+group by users.city
+order by count(distinct trades.order_id) desc
+limit 3;
+```
+I forgot the filter 'Completed'
