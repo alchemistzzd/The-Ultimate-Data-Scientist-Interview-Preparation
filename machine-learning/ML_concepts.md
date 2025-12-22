@@ -20,15 +20,11 @@ Forward-looking, model -> data, attach to results; probabilities that attach to 
 Input: model parameters
 Variable: data
 Output: a distribution over data given parameters
-$$
-P(\text{data} \mid \text{parameters})
-$$
+P(data|parameters) 
 
 ## Likelihood
 Backward-looking, data -> model, attach to hypotheses on the model; the hypotheses to which likelihoods attach are often not mutually exclusive or exhaustive, eg. two hypothese could be overlapping. Likelihood treats data as fixed and parameters as variable.
 Input: data result
 Variable: model parameters
 Output: a function over parameters given fixed data
-$$
-L(\text{parameters} \mid \text{data}) = P(\text{data} \mid \text{parameters})
-$$
+L(parameters|data) = P(data|parameters) 
