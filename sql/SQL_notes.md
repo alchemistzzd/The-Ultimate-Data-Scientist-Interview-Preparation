@@ -45,3 +45,22 @@ order by count(distinct trades.order_id) desc
 limit 3;
 ```
 I forgot the filter 'Completed'
+
+## 12/10/25
+```sql
+SELECT date_part('month',submit_date::date) as mth,
+product_id as product,
+round(avg(stars),2) as avg_stars
+FROM reviews
+group by product_id, date_part('month',submit_date::date)
+order by date_part('month',submit_date::date), product_id;
+```
+order by date_part('month',submit_date::date) can be replaced by order by mth because it has been defined previously.
+
+INNER JOIN: Returns only the rows with matching values from both tables.
+LEFT JOIN: Returns all the rows from the left table and the matching rows from the right table.
+RIGHT JOIN: Returns all the rows from the right table and the matching rows from the left table.
+FULL OUTER JOIN: Returns all rows when there is a match in either the left or the right table. If there is no match, NULL values are returned for columns from the table without a match.
+
+## 12/17/25
+case when ... then ... else ... end
