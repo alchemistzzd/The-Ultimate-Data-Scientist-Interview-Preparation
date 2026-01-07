@@ -13,6 +13,13 @@ Impact: Noise sets lower bound in genelization error
 Cause: Irreducible error inherent to the problem. Eg. you cannot predict the outcome of a flip of a
 fair coin any more than 50% of the time.
 
+## Solutions for high bias
+1. Add more data for training
+
+## Solutions for high variance
+1. Constrain model flexibility through regularization
+
+
 # Likelihood vs Probabilities
 [Bayes for Beginners: Probability and Likelihood](../References/2015-APS-Bayes-for-Beginners-1-Probability-and-Likelihood---Association-for-Psychological-Science.pdf)
 ## Probability
@@ -48,3 +55,11 @@ If prior is not reliable or you are unsure, MLE is better, especially if you hav
 Bayesian computations are more complex then MLE. If you are restrained by resources, MLE is better.
 
 # Generative vs Discriminative models
+
+
+# Decision boundary
+A decision boundary in machine learning is the line, curve, or surface that separates different classes or outcomes in a feature space, showing where a model changes its prediction from one category to another
+
+## Why in KNN, k = 1 has a lower bias than k = 100?
+Bias = error from overly simple assumptions. High bias means the model can’t represent the true pattern.
+Think of it from a decision boundary perspective, k = 1 has a more jagged and flexible decision boundary because it only cares the 1 neighbor near it, hence lower bias; while k = 100 has a much more smooth decision boundary because it averages over a lot of neighbors, hence higher bias and lower variance.
