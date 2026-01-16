@@ -64,3 +64,32 @@ FULL OUTER JOIN: Returns all rows when there is a match in either the left or th
 
 ## 12/17/25
 case when ... then ... else ... end
+
+## 01/07/26
+To compute a row-level calculation in SQL, both values must be available in the same row context, typically as columns or derived expressions.
+For example:
+Assume you have an events table on Facebook app analytics. Write a query to calculate the click-through rate (CTR) for the app in 2022 and round the results to 2 decimal places.
+
+Percentage of click-through rate (CTR) = 100.0 * Number of clicks / Number of impressions
+To avoid integer division, multiply the CTR by 100.0, not 100.
+events Table:
+Column Name	Type
+app_id	integer
+event_type	string
+timestamp	datetime
+events Example Input:
+app_id	event_type	timestamp
+123	impression	07/18/2022 11:36:12
+123	impression	07/18/2022 11:37:12
+123	click	07/18/2022 11:37:42
+234	impression	07/18/2022 14:15:12
+234	click	07/18/2022 14:16:12
+
+Here you need to first make two new columns, impression and click, then you do operations over these two new columns.
+
+## 01/15/2026
+To write a condition where two datetime has gaps:
+action_date = signup_date + interval '1 day';
+action_date = signup_date + interval '1 week';
+action_date = signup_date + interval '1 month';
+action_date = signup_date + interval '1 year';
