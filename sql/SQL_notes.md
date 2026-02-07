@@ -26,6 +26,7 @@ post_date::DATE casts the timestamp to a date.
 	•	Removes the time component.
 	•	Example: 2021-07-10 12:00:00 → 2021-07-10
 DATE_PART('year', ...) extracts the year from the date.
+or EXTRACT(YEAR FROM post_date) 
 
 3. DATE_TRUNC truncates a timestamp or date to a specified precision by setting all lower-order units to zero (or the first day).
 DATE_TRUNC('month', '2022-08-03 15:20:40')
@@ -93,3 +94,20 @@ action_date = signup_date + interval '1 day';
 action_date = signup_date + interval '1 week';
 action_date = signup_date + interval '1 month';
 action_date = signup_date + interval '1 year';
+
+
+## 02/06/2026
+WHERE is applied after the LEFT JOIN, it filters rows from the result set, not from the joined table. If you want to only filter from one of the table in the joining operation, you should just use and
+https://datalemur.com/questions/sql-ibm-db2-product-analytics
+
+BETWEEN start AND end:
+>= start AND <= end
+1.	BETWEEN '2023-07-01' AND '2023-09-30' includes the full day of September 30, but no time is specified.
+•	In most SQL implementations, '2023-09-30' is interpreted as '2023-09-30 00:00:00'.
+•	So any queries later in the day on Sep 30 (e.g., '2023-09-30 14:00:00') are excluded.
+
+## 02/07/2026
+rank() over(partition by x order by y)
+generate a ranking column from an existing column
+
+The CASE statement in the WHERE clause is used to filter **rows** based on specified conditions within the dataset.
