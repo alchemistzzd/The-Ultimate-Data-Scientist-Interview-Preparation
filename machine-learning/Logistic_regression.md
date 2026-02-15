@@ -28,20 +28,31 @@
 - How to model non linear relationships? Transform the features, and make linear models on the transformed features
 
 ## Assumptions
-- Linear relationship between feature and target variables
-- Error is normally distributed ~(0,/sigma^2). Error is the part of the target variable that linear model cannot explain (measurement noise, unobserved variables, random fluctuations), this assumption came from Central Limit Theorem intuition
-What happens if errors are NOT normal?
-- Variance of the error is constant, uncertainty around the prediction is constant no matter how big or small is the features and predictions.
-What happens if variance is NOT constant?
-- All feature variables are not correlated, no multicollinearity
-What happens if there is multicollinearity?
-- All data points(observations) are independant from each other, no autocorrelation
-What happens if there is autocorrelation?
+-Linearity of the Log-Odds: Logistic Regression assumes a linear relationship between the log-odds of the dependent variable and the independent variables. Deviations from linearity can impact the model’s accuracy.
+Independence of Observations: Each observation should be independent of others. In scenarios like time-series data, where observations may be correlated, violating this assumption can affect the model’s reliability.
+-Absence of Multicollinearity: The assumption of no multicollinearity suggests that predictor variables should not be highly correlated. High multicollinearity can make it challenging to assess the individual impact of each variable.
+-No Outliers: Outliers can disproportionately influence the model, affecting coefficients and potentially leading to erroneous conclusions. Robust techniques or data transformations may be necessary to mitigate their impact.
+-Binary or Ordinal Dependent Variable: Logistic Regression is designed for binary or ordinal outcomes. Attempting to apply it to non-binary problems can yield inaccurate results.
 
 ## Algorithm (step-by-step)
 What is the cost function?
+Mean Square Error vs Cross Entropy
+**Mean Square Error**
+Using maximum likelihood, Goal is to find the value of p that maximizes the likelihood of our data.
+𝑃(𝑋 = 1)= 𝑝
+𝑃(𝑋 = 0)= 1 − 𝑝
+𝐿(𝑥𝑖)= 𝑃 (𝑥𝑖 |𝑝) = 𝑝^𝑥𝑖 * (1 − 𝑝)^1−𝑥𝑖
 
-```text
+Log transformation -> derivative
+
+This results in our estimate being the mean of our observations.
+
+**Cross Entropy**
+Think of logistic regression as modeling probability that features belong to a class
+
+
+
+
 Algorithm <Name>
 Input: ...
 Output: ...

@@ -21,7 +21,7 @@
 ---
 
 ## When to use
-- When need to classify data in to different groups
+- When to model linear relationships
 
 ## Intuition
 - Linear models are linear in the parameters, not in input features
@@ -39,7 +39,12 @@ What happens if there is multicollinearity?
 What happens if there is autocorrelation?
 
 ## Algorithm (step-by-step)
-What is the cost function?
+What is the metric for evaluation?
+-Mean squared error (MSE)
+-Mean absolute error(MAE)
+-R2,coefficient of determination: Proportion of the response variable variation explained by the model
+-Adjusted R2: since R2 increases with more predictor variables regardless of relevance, Adjusted R-squared modifies this value, penalizing the model for adding irrelevant variables. Use  to compare models with different numbers of predictors, as it only increases if new variables improve the model. Adjusted R2 is always <= R2
+-Explained variance ?
 
 ```text
 Algorithm <Name>

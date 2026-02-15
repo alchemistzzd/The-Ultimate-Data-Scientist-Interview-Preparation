@@ -111,3 +111,45 @@ rank() over(partition by x order by y)
 generate a ranking column from an existing column
 
 The CASE statement in the WHERE clause is used to filter **rows** based on specified conditions within the dataset.
+
+Mistake I made today:
+Write a query to find the top 3 most profitable drugs sold, and how much profit they made. Assume that there are no ties in the profits.
+
+I used unit profit instead total profit for ranking. I guess it's helpful to ask the interviewer which metrics to use.
+
+WHERE runs before aggregation. You cannot do where count(x)>3
+WHERE runs after join
+
+## 02/09/2026
+ROWS BETWEEN 2 preceding and CURRENT ROW
+
+ORDER BY department_name ASC, salary desc, name ASC
+I made the mistake to only order by two conditions
+
+In a LEFT JOIN, the AND in the ON clause only filters table t (the right table), not the left one.
+
+UNION ALL keeps everything, including duplicates.
+UNION removes duplicates, so you get only the unique items.
+
+## 02/10/2026
+sum(CASE WHEN rank%2 != 0 then measurement_value END) AS odd_sum,
+Operations like sum, avg should happen first, and END should be in the parenthesis. AS should be right after parenthesis
+
+## 02/11/2026
+CASE 
+    WHEN order_id = (SELECT max(order_id) FROM orders) AND order_id % 2 != 0 THEN order_id
+    WHEN order_id % 2 = 0 THEN order_id - 1
+    ELSE order_id + 1
+END AS
+I did not remember the syntax, also CASE does not always need an ELSE
+
+When you want to combine two columns from two different tables, use with x as.., y as .., then do a select in the end.
+
+DATE(T2.transaction_date) = DATE(T1.transaction_date) + 1
+equals to
+transaction_date + INTERVAL '1 day' as transaction_date
+
+To make two date columns like year and month into one date columns, use MAKE_DATE(issue_year, issue_month, 1)
+
+
+COUNT(column) does NOT count NULL values!!!
