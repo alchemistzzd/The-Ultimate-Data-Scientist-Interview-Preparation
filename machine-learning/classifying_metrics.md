@@ -46,8 +46,11 @@ While F1 score treats Precision and Recall equally, we can further expand F1 to 
 $$F_\beta = (1 + \beta^2) \cdot \frac{\text{Precision} \cdot \text{Recall}}{(\beta^2 \cdot \text{Precision}) + \text{Recall}}$$
 
 The rule of thumb is simple: $\beta$ is the "Recall Multiplier."
+
 $\beta = 1$: You get the F1 Score (Balanced).
+
 $\beta > 1$ (e.g., $F_2$): You care more about Recall. You want to find all the positives, even if it means more false alarms.
+
 $\beta < 1$ (e.g., $F_{0.5}$): You care more about Precision. You want to be very sure when you call something "Positive," even if you miss a few cases.
 
 - Confusion Matrices
@@ -68,9 +71,12 @@ The most optimal curve is the one hugging left top of the plot, indicating a hig
 
 2. Statistical definition
 The AUC is the probability that a randomly chosen positive instance will be ranked higher by the model than a randomly chosen negative instance.
+
 $$P(\text{score}(x_{pos}) > \text{score}(x_{neg}))$$
 
 If you have $n_p$ positive samples and $n_n$ negative samples, the relationship is:
+
 $$\text{AUC} = \frac{U}{n_p \times n_n}$$
+
 This is why AUC is called a non-parametric metric. It doesn't care about the mean or variance of your scores; it only cares about the ordinal rank.
 
