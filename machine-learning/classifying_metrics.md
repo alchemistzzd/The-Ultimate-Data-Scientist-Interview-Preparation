@@ -38,12 +38,17 @@ High Specificity means you can trust a Positive result (because the test is so p
 
 - F1 score
 The F1 score is the harmonic mean of Precision and Recall. It is the most popular metric for imbalanced datasets because it punishes models
+
 $$F_1 = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$$
 
 While F1 score treats Precision and Recall equally, we can further expand F1 to $F_\beta$
+
 $$F_\beta = (1 + \beta^2) \cdot \frac{\text{Precision} \cdot \text{Recall}}{(\beta^2 \cdot \text{Precision}) + \text{Recall}}$$
 
-The rule of thumb is simple: $\beta$ is the "Recall Multiplier."$\beta = 1$: You get the F1 Score (Balanced).$\beta > 1$ (e.g., $F_2$): You care more about Recall. You want to find all the positives, even if it means more false alarms.$\beta < 1$ (e.g., $F_{0.5}$): You care more about Precision. You want to be very sure when you call something "Positive," even if you miss a few cases.
+The rule of thumb is simple: $\beta$ is the "Recall Multiplier."
+$\beta = 1$: You get the F1 Score (Balanced).
+$\beta > 1$ (e.g., $F_2$): You care more about Recall. You want to find all the positives, even if it means more false alarms.
+$\beta < 1$ (e.g., $F_{0.5}$): You care more about Precision. You want to be very sure when you call something "Positive," even if you miss a few cases.
 
 - Confusion Matrices
 X axis: Predicted class
