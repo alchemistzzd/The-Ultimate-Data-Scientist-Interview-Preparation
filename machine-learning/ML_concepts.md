@@ -63,3 +63,35 @@ A decision boundary in machine learning is the line, curve, or surface that sepa
 ## Why in KNN, k = 1 has a lower bias than k = 100?
 Bias = error from overly simple assumptions. High bias means the model can’t represent the true pattern.
 Think of it from a decision boundary perspective, k = 1 has a more jagged and flexible decision boundary because it only cares the 1 neighbor near it, hence lower bias; while k = 100 has a much more smooth decision boundary because it averages over a lot of neighbors, hence higher bias and lower variance.
+
+## Data snooping
+If a test data set has affected **any** step in thelearning process, its ability to assess the outcomehas been compromised
+
+## Difference between using training data to learn model parameters and using validation data to learn model hyperparameters
+
+Training Data: Learning Parameters: 
+
+Parameters are the variables the model learns automatically during the training process. Eg. The weights ($w$) and biases ($b$) in a neural network, or the coefficients in a linear regression.
+
+Validation Data: Learning Hyperparameters
+
+Hyperparameters are the settings you (the Data Scientist) choose before training begins. The model cannot learn these on its own. Eg. The learning rate, the number of layers in a neural network, the "depth" of a decision tree, or the $k$ in K-Nearest Neighbors.
+
+
+## Bootstrap sampling
+
+Sampling with replacement. Often used to estimate standard errors and confidence intervals. Integral part of model ensembles (i.e. bagging in random forests)
+
+Why can't we use Training Data for both?
+
+If you use training data to pick hyperparameters, you will always pick the most complex model possible.For example, a Decision Tree with "infinite depth" will have 100% accuracy on the training data because it can just create a unique rule for every single row. However, it will fail miserably in the real world. The Validation Data acts as a "reality check"—it tells you if your hyperparameter choices are actually helping the model generalize or if they are just helping it memorize.
+
+
+## Generative model vs Discrimitive model
+
+| Feature | Discriminative $P(y|x)$ | Generative $P(x|y)$ |
+| :--- | :--- | :--- |
+| Focus | Decision Boundaries: Finding the line that separates classes. | Data Distributions: Modeling how each class "looks." |
+| Data Needs | Generally requires less data to find an effective boundary. | Usually needs more data to accurately "model the world." |
+| Outliers | Can be sensitive to outliers near the decision boundary. | Better at detecting outliers (it knows what "normal" looks like). |
+| Use Case | Traditional Classification, Regression, Sentiment Analysis. | Generating new data (GANs, LLMs), handling missing values. |
