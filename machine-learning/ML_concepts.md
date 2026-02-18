@@ -54,8 +54,6 @@ If prior is not reliable or you are unsure, MLE is better, especially if you hav
 3. How much computational resources you have?
 Bayesian computations are more complex then MLE. If you are restrained by resources, MLE is better.
 
-# Generative vs Discriminative models
-
 
 # Decision boundary
 A decision boundary in machine learning is the line, curve, or surface that separates different classes or outcomes in a feature space, showing where a model changes its prediction from one category to another
@@ -93,7 +91,9 @@ If you use training data to pick hyperparameters, you will always pick the most 
 
 Core Focus: Finding the Decision Boundary. It only cares about the line that separates "Class A" from "Class B."
 
-Data Efficiency: Usually requires less data because it only needs to learn the differences, not the whole distribution.Outliers: Can be sensitive to outliers if they happen to sit right on the decision boundary.
+Data Efficiency: Usually requires less data because it only needs to learn the differences, not the whole distribution.
+
+Outliers: Can be sensitive to outliers if they happen to sit right on the decision boundary.
 
 Primary Use: Standard Classification (e.g., Logistic Regression), Sentiment Analysis, and Neural Networks.
 
@@ -106,3 +106,5 @@ Data Efficiency: Often needs more data to accurately model the "shape" of how th
 Outliers: Robust at detecting outliers because it knows what a "normal" data point should look like for that class.
 
 Primary Use: Generating new data (e.g., GANs, LLMs), handling missing data, and Naive Bayes.
+
+

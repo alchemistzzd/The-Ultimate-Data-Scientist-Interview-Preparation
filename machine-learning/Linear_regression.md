@@ -9,14 +9,8 @@
 - [Intuition](#intuition)
 - [Formal definition / math](#formal-definition--math)
 - [Algorithm (step-by-step)](#algorithm-step-by-step)
-- [Complexity](#complexity)
-- [Hyperparameters](#hyperparameters)
-- [Implementation (python)](#implementation-python)
-- [Practical tips & gotchas](#practical-tips--gotchas)
-- [Experiments / example](#experiments--example)
-- [References & further reading](#references--further-reading)
-- [Exercises / extension ideas](#exercises--extension-ideas)
-- [Changelog](#changelog)
+- [Interview questions](#interviewquestions)
+
 
 ---
 
@@ -40,11 +34,11 @@ What happens if there is autocorrelation?
 
 ## Algorithm (step-by-step)
 What is the metric for evaluation?
--Mean squared error (MSE)
--Mean absolute error(MAE)
--R2,coefficient of determination: Proportion of the response variable variation explained by the model
--Adjusted R2: since R2 increases with more predictor variables regardless of relevance, Adjusted R-squared modifies this value, penalizing the model for adding irrelevant variables. Use  to compare models with different numbers of predictors, as it only increases if new variables improve the model. Adjusted R2 is always <= R2
--Explained variance ?
+- Mean squared error (MSE)
+- Mean absolute error(MAE)
+- R2,coefficient of determination: Proportion of the response variable variation explained by the model
+- Adjusted R2: since R2 increases with more predictor variables regardless of relevance, Adjusted R-squared modifies this value, penalizing the model for adding irrelevant variables. Use  to compare models with different numbers of predictors, as it only increases if new variables improve the model. Adjusted R2 is always <= R2
+- Explained variance ?
 
 ```text
 Algorithm <Name>
@@ -53,3 +47,5 @@ Output: ...
 for i in 1..N:
     ...
 return ...
+
+## Interview questions
