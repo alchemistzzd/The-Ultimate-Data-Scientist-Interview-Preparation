@@ -89,9 +89,20 @@ If you use training data to pick hyperparameters, you will always pick the most 
 
 ## Generative model vs Discrimitive model
 
-| Feature | Discriminative $P(y|x)$ | Generative $P(x|y)$ |
-| :--- | :--- | :--- |
-| Focus | Decision Boundaries: Finding the line that separates classes. | Data Distributions: Modeling how each class "looks." |
-| Data Needs | Generally requires less data to find an effective boundary. | Usually needs more data to accurately "model the world." |
-| Outliers | Can be sensitive to outliers near the decision boundary. | Better at detecting outliers (it knows what "normal" looks like). |
-| Use Case | Traditional Classification, Regression, Sentiment Analysis. | Generating new data (GANs, LLMs), handling missing values. |
+**Discriminative Models: $P(y|x)$**
+
+Core Focus: Finding the Decision Boundary. It only cares about the line that separates "Class A" from "Class B."
+
+Data Efficiency: Usually requires less data because it only needs to learn the differences, not the whole distribution.Outliers: Can be sensitive to outliers if they happen to sit right on the decision boundary.
+
+Primary Use: Standard Classification (e.g., Logistic Regression), Sentiment Analysis, and Neural Networks.
+
+**Generative Models: $P(x|y)$**
+
+Core Focus: Modeling Data Distributions. It learns the "profile" or "essence" of each class.
+
+Data Efficiency: Often needs more data to accurately model the "shape" of how the data was generated.
+
+Outliers: Robust at detecting outliers because it knows what a "normal" data point should look like for that class.
+
+Primary Use: Generating new data (e.g., GANs, LLMs), handling missing data, and Naive Bayes.
