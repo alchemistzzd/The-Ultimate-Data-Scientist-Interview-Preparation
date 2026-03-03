@@ -63,3 +63,12 @@ she said need someone to do the tradeoff and cut the unnecessary features if nee
 
 3. Case2: if someone have unrealistic expectations on AI projects, how would you explain it to them?
 
+- Laura 
+
+1. What are you looking for in this role
+
+2. Tell me about how you drive an end-to-end project cross functionally
+
+3. Tell me about a time when you have to explain something techinal to non technical stakeholders
+
+4. Tell me about a time you had a disagreement with the stakeholder, how did you solve it
