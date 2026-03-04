@@ -1,74 +1,70 @@
-## Rillet
+# Rillet
 
-# Round 1 - ML/AI Breadth
+## Round 1 - ML/AI Breadth
 
 1. What are the fine tuning techniques
-
 2. What is instruction tuning
-
 3. What is the difference between smaller and bigger sematic chuncks, benefits?
-
 4. Explain how to train a Transformer
-
 5. How to make sure the model give deterministic answers? Consistency?
-
 6. Difference between a base model and fine-tuned model
-
 7. How does an agent work? Explain the gist.
-
 8. How to evaluate a model before shipping(offline), and after shipping(online)
-
 9. Temperature: Lower temperature gives more consistency
-
 10. Compare benefits and downsides of chunking sentences bigger or smaller
 
-- What I can improve:
+**What I can improve:**
 
-    - Self intro can be more impressive
+- Self intro can be more impressive
+- How to conclude an answer
+- Follow up questions on the basic tech, especially real production related
 
-    - How to conclude an answer
+**Their answers to my questions**
 
-    - Follow up questions on the basic tech, especially real production related
+Fast, iterative environment, 40-50h/week. Every week meeting with CEO to define what to do this week. Everyone has a little feature to work on but also collaborate together on a big project (chatbot right now)
 
-- Their answers to my questions
+---
 
-    Fast, iterative environment, 40-50h/week. Every week meeting with CEO to define what to do this week. Everyone has a little feature to work on but also collaborate together on a big project (chatbot right now)
+# Parafin
 
-
-
-## Parafin
-
-# Round 1 - Past experience
+## Round 1 - Past experience
 
 1. Why are you interested in Parafin
-
 2. Walk me end to end of a project you did
 
-- What I can improve:
+**What I can improve:**
 
-    - Self intro prepare more early and tailored
-    - A end to end proud project
+- Self intro prepare more early and tailored
+- A end to end proud project
 
-## Walmart
+---
 
-- Director round
+# Walmart
 
-Questions she asked:
+## Director round
+
+**Questions she asked:**
 
 1. What kind of role the role is in your mind?
+2. **Case1:** if you are working on a project and a new policy comes in, you need to delivery in a shorter time, what is your thought process of dealing with these  
+   She said need someone to do the tradeoff and cut the unnecessary features if needed
+3. **Case2:** if someone have unrealistic expectations on AI projects, how would you explain it to them?
 
-2. Case1: if you are working on a project and a new policy comes in, you need to delivery in a shorter time, what is your thought process of dealing with these
-
-she said need someone to do the tradeoff and cut the unnecessary features if needed
-
-3. Case2: if someone have unrealistic expectations on AI projects, how would you explain it to them?
-
-- Laura 
+## Laura
 
 1. What are you looking for in this role
-
 2. Tell me about how you drive an end-to-end project cross functionally
-
 3. Tell me about a time when you have to explain something techinal to non technical stakeholders
-
 4. Tell me about a time you had a disagreement with the stakeholder, how did you solve it
+
+---
+
+# Waymo
+
+## Coding round
+
+**Problem:** A variant of Number of islands. But there are lakes in between the islands, you need to input a land coordinate (x,y) and return the number of island adjacent to the land.
+
+**What I can improve:**
+
+I did pretty well in writing the whole breath first search part. Maybe better to have a plan stated clearly before started coding(but I started coding because I cannot figure out a whole plan and didn't want to be stuck forever). He gave a few hints along the way and I took them(good). But I didn't have time to finish the last part consolidating input and output. I think I did well in explaining time and space complexity proactively. And in the end I asked him if there is anything else I can clarify further.
