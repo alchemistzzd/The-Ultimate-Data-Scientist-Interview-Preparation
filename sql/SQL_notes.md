@@ -199,3 +199,46 @@ equals
 To make two date columns like year and month into one date column, use `MAKE_DATE(issue_year, issue_month, 1)`.
 
 **COUNT(column) does NOT count NULL values!!!**
+
+## 03/05/2026
+
+- Within WHERE clause, SQL does not execute top down.
+```sql
+WHERE 
+EXTRACT(YEAR FROM curr_month.event_date) = 2022
+AND EXTRACT(MONTH FROM curr_month.event_date) = 7
+```
+and 
+```sql
+WHERE 
+EXTRACT(MONTH FROM curr_month.event_date) = 7
+AND EXTRACT(YEAR FROM curr_month.event_date) = 2022
+```
+are the same
+
+
+- Learned lag()
+
+https://datalemur.com/questions/yoy-growth-rate
+
+Usually used when you see
+year-over-year
+month-over-month
+previous value
+
+
+## 03/09/2025
+
+- Big table
+
+When the original table is large, JOIN is generally more efficient, because it focuses on the subset of rows that matter
+
+- Window functions
+
+Key Rule: Window Functions cannot be in WHERE
+
+- Division rule
+
+If both numbers in a division are integers → SQL returns an integer.
+If at least one number is a decimal/float → SQL returns a decimal.
+Solution: COUNT(user_id) * 1.0 / COUNT(total_users)
