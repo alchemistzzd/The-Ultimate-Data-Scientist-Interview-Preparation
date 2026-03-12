@@ -123,9 +123,26 @@ Conceptually:
 
 Outcome variance = explained variance + residual variance
 
-Regression removes part of the **explained variance**, leaving smaller **residual variance**.
+Regression accounts for more **explained variance**, leaving smaller **residual variance**.
 
 Smaller residual variance → smaller variance of the treatment estimate → smaller standard error.
+
+\mathrm{Var}(Y) = \mathrm{Var}(\hat{Y}) + \mathrm{Var}(\varepsilon)
+
+
+3. What happens when we add predictive covariates
+
+If we include a covariate X that strongly predicts Y, then the regression can explain more variation:
+
+\mathrm{Var}(\hat{Y}) \uparrow
+
+Since total variance stays the same:
+
+\mathrm{Var}(Y) = \text{constant}
+
+the residual variance must decrease:
+
+\mathrm{Var}(\varepsilon) \downarrow
 
 ---
 
@@ -616,3 +633,34 @@ Experiments can affect the auction equilibrium, impacting all users.
   - Analyze control outcomes by exposure to treated friends.
   - Compare control users with many treated friends vs mostly control friends.
   - Higher engagement among exposed control users → network interference likely.
+
+
+
+
+
+## Variance Reduction
+  
+### Interview Answer Template
+
+- High variance due to user heterogeneity.
+- Use **predictive pre-treatment covariates** (e.g., past playtime).
+- Covariate explains part of outcome variation.
+- Removes noise from the metric.
+- Reduces **residual variance**.
+- Improves **precision of treatment effect estimate**.
+- Increases **statistical power**.
+
+## Bias vs Variance – Covariate Selection
+
+- Use **pre-treatment variables**.
+- Strong predictors of the outcome → reduce variance.
+
+- Avoid **post-treatment variables**.
+- Treatment → mediator → outcome.
+- Controlling mediator blocks part of treatment effect.
+- Introduces **bias / underestimates treatment effect**.
+
+### Key Rule
+
+- Pre-treatment covariates → **variance reduction**.
+- Post-treatment covariates → **bias**.
