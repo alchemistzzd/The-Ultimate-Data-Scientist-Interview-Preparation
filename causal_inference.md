@@ -1,12 +1,27 @@
-# Causal Inference Notes — Week 1
+## Material
+
+https://www.bradyneal.com/causal-inference-course
+
+
 
 ## Table of contents
-
+- [Interview keys](#interview-keys)
 - [Causal Inference Notes — Week 1](#causal-inference-notes--week-1)
 - [Piece 2 — Regression Adjustment in A/B Tests](#piece-2--regression-adjustment-in-ab-tests)
 - [Piece 3 — Good vs Bad Covariates in Regression Adjustment](#piece-3--good-vs-bad-covariates-in-regression-adjustment)
 
 ---
+# Interview keys
+
+1. Step by step, be specific for the case, do not jump to conclusion
+
+2. Include the causal impact, X impacts Y, X is an indicator of Y etc.
+
+3. Do not say do not launch easily, say .. might impact result. Recommend more experiments etc.
+
+
+# Causal Inference Notes — Week 1
+
 
 ## 1. Key Mindset: Prediction vs Causation
 
@@ -527,3 +542,77 @@ Avoid covariates that:
 
 - occur after treatment (mediators)
 - are common effects of treatment and outcome (colliders)
+
+
+# Quiz on core concepts 
+
+## Mistakes
+
+
+## Weak ones
+
+1. What is the safest unit of randomization for most app experiments?
+
+Correct answer:
+User
+
+Explanation:
+Prevents users from experiencing inconsistent treatments across sessions.
+
+2. Why might user-level randomization still suffer interference in ad marketplaces?
+
+Correct answer:
+Because changing supply for treated users can shift auction prices for control users
+
+Explanation:
+Experiments can affect the auction equilibrium, impacting all users.
+
+# Core concepts
+
+## Network Effects
+
+- Product value increases as more users join or interact.
+- More users → more interactions/content/supply → higher product value.
+
+### Examples
+- Social networks
+- Marketplaces
+- Multiplayer games
+
+### Relationship to Interference
+
+- Network effects mean users influence each other's behavior.
+- In experiments, this can cause **interference (spillover)**:
+  - Treatment applied to one user affects outcomes of another user.
+- This violates the **independence assumption** in A/B testing.
+
+### Why it matters
+
+- Control group behavior may be influenced by treatment users.
+- Estimated treatment effects may become **biased or diluted**.
+
+### Mitigation
+
+- Cluster / group randomization
+- Randomize by network or region
+- Monitor ecosystem-level metrics
+
+### Interview answers
+
+- Yes, network effects could bias the experiment.
+- Recommendations based on friends' activity.
+- Treated users may interact with / invite control friends.
+- Control users’ engagement may increase without treatment.
+- Control group becomes contaminated.
+- Estimated treatment effect may be underestimated.
+
+- Mitigation:
+  - Randomize at friend-network level.
+  - Put connected users in same bucket.
+  - Or use cluster randomization by social community.
+
+- If network randomization is not feasible:
+  - Check for spillover evidence.
+  - Analyze control outcomes by exposure to treated friends.
+  - Compare control users with many treated friends vs mostly control friends.
+  - Higher engagement among exposed control users → network interference likely.
