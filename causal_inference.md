@@ -127,23 +127,22 @@ Regression accounts for more **explained variance**, leaving smaller **residual 
 
 Smaller residual variance → smaller variance of the treatment estimate → smaller standard error.
 
-\mathrm{Var}(Y) = \mathrm{Var}(\hat{Y}) + \mathrm{Var}(\varepsilon)
+$\mathrm{Var}(Y) = \mathrm{Var}(\hat{Y}) + \mathrm{Var}(\varepsilon)$
 
 
 3. What happens when we add predictive covariates
 
 If we include a covariate X that strongly predicts Y, then the regression can explain more variation:
 
-\mathrm{Var}(\hat{Y}) \uparrow
+$\mathrm{Var}(\hat{Y}) \uparrow$
 
 Since total variance stays the same:
 
-\mathrm{Var}(Y) = \text{constant}
+$\mathrm{Var}(Y) = \text{constant}$
 
 the residual variance must decrease:
 
-\mathrm{Var}(\varepsilon) \downarrow
-
+$\mathrm{Var}(\varepsilon) \downarrow$
 ---
 
 ## 4. Good covariates
@@ -664,3 +663,22 @@ Experiments can affect the auction equilibrium, impacting all users.
 
 - Pre-treatment covariates → **variance reduction**.
 - Post-treatment covariates → **bias**.
+
+
+
+# Mock with William:
+1. Pros and cons between simple and stratifying randomnization
+
+2. What specific covariates would you use for a case?
+
+3. Explain p-value
+
+4. Explain power
+
+5. What if we cannot do AB test, what to use? Quasi
+
+6. Metric goes up at first, then goes down, why? Novelty effect
+
+7. A metric moves differently for subgroups under a big metric
+
+8. Guardrails they use mostly are one each level at funnel

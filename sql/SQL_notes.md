@@ -227,7 +227,7 @@ month-over-month
 previous value
 
 
-## 03/09/2025
+## 03/09/2026
 
 - Big table
 
@@ -237,8 +237,57 @@ When the original table is large, JOIN is generally more efficient, because it f
 
 Key Rule: Window Functions cannot be in WHERE
 
+You can absolutely do operations in WHERE. What you cannot do in WHERE is use:
+	•	aggregate functions (COUNT, SUM, MAX, etc.)
+	•	window functions (ROW_NUMBER, RANK, etc.)
+
 - Division rule
 
 If both numbers in a division are integers → SQL returns an integer.
 If at least one number is a decimal/float → SQL returns a decimal.
 Solution: COUNT(user_id) * 1.0 / COUNT(total_users)
+
+- Nested aggregation
+
+MAX(COUNT(*)) is wrong, since MAX() and COUNT() are both aggregations and you cannot do them at the same time
+
+
+- dense_rank() and rank()
+
+dense_rank():1,2,3,3,4
+rank():1,2,3,3,5
+
+- ETL (!!!)
+
+partition pruning
+incremental loads
+idempotent pipelines
+late arriving data
+backfills
+pre-aggregation
+
+## 03/12/2026
+
+- Return Null when not existing
+If you do select x from y, and x does not exist it will return empty; instead you need to do select(select x from y) as z
+When there are no rows, most aggregate functions return NULL instead of an empty result. max(),min()...
+
+- If your result should only include matched rows, and null matches are unwanted:
+	•	use JOIN
+	•	not LEFT JOIN
+
+1. Is this a foreign key?
+2. Is this column grouped?
+3. Is there a LEFT JOIN?
+4. Could this event not exist yet?
+
+
+- Distinct
+DISTINCT applies to the entire SELECT list, not just the column next to it.
+
+
+- Get first/last few string
+SELECT LEFT(column_name, 6)
+FROM table_name;
+
+- to_char()
