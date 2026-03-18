@@ -166,6 +166,8 @@ I made the mistake to only order by two conditions.
 
 In a **LEFT JOIN**, the **AND** in the **ON** clause only filters table t (the right table), not the left one.
 
+so if there is an extra filter, use ON; if you want to drop left join table rows as well, use where
+
 - **UNION ALL** keeps everything, including duplicates.
 - **UNION** removes duplicates, so you get only the unique items.
 
@@ -259,12 +261,24 @@ rank():1,2,3,3,5
 
 - ETL (!!!)
 
-partition pruning
-incremental loads
-idempotent pipelines
-late arriving data
-backfills
-pre-aggregation
+1. partition pruning: 
+   - useful when can be partitioned by event date
+
+2. incremental loads
+   - have derived table like a dictionary like table to record count for each category
+
+3. idempotent pipelines
+   - merge, update, insert
+
+4. late arriving data
+   - potential risk for the result
+   
+
+5. backfills
+   - compute paritial, keep temp table, update production table after verified
+
+6. pre-aggregation
+   - materialize the final result as a derived table or materialized view
 
 ## 03/12/2026
 
