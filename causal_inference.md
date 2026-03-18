@@ -19,6 +19,8 @@ https://www.bradyneal.com/causal-inference-course
 
 3. Do not say do not launch easily, say .. might impact result. Recommend more experiments etc.
 
+4. Start by listing steps for AB testing, and ask interview which part do they want to dive into?
+
 
 # Causal Inference Notes — Week 1
 
@@ -682,3 +684,118 @@ Experiments can affect the auction equilibrium, impacting all users.
 7. A metric moves differently for subgroups under a big metric
 
 8. Guardrails they use mostly are one each level at funnel
+
+Quasi experimental methods:
+Instrumental Variables (IV)
+Definition: A method that uses a third variable (the "instrument") that is correlated with the treatment but does not have a direct effect on the outcome, nor is it correlated with the error term (confounders). This isolates the causal effect of the treatment.
+Example: To study the effect of education on earnings, researchers might use the distance a student lives from a college as an instrument. Distance affects the likelihood of attending college but is generally unrelated to an individual's innate earning potential.
+
+Matching
+Definition: A technique where treated units are paired with untreated (control) units that have similar observable characteristics (covariates). The goal is to create a control group that looks as much like the treatment group as possible.
+Example: Comparing the health outcomes of two groups of patients who have the same age, weight, and medical history, where one group received a new drug and the other did not.
+
+Propensity Score
+Definition: This method estimates the probability (propensity) of a unit receiving treatment based on observed characteristics. Researchers then match, stratify, or weight units based on these scores to balance the treatment and control groups.
+Example: If wealthier people are more likely to join a voluntary job training program, a propensity score would calculate the likelihood of joining based on income. Outcomes are then compared between people with the same "propensity" to join, regardless of whether they actually did.
+
+Difference-in-Differences (DiD)
+Definition: This method compares the change in outcomes over time between a treatment group and a control group. It assumes that, without the treatment, the two groups would have followed the same "trend" over time.
+Example: Comparing the change in employment rates in a city that implemented a minimum wage increase versus a neighboring city that did not, both before and after the policy change.
+
+Synthetic Control
+Definition: Used primarily for case studies with a single treated unit (like a state or country). It involves creating a weighted combination of multiple control units (a "synthetic" version) that closely matches the treated unit's pre-treatment characteristics.
+Example: Estimating the economic impact of a tobacco control law in California by creating a "Synthetic California" composed of a weighted average of other states that did not pass the law.
+
+Regression Discontinuity Design (RDD)
+Definition: This method exploits a specific cutoff or threshold that determines who receives treatment. Units just above the threshold are compared to those just below it, as they are assumed to be nearly identical except for the treatment.
+Example: Evaluating the effect of a scholarship awarded only to students who score above 90 on an exam. Students who scored 89 (control) are compared to those who scored 91 (treated).
+
+Fixed Effects (Panel Data)
+Definition: A method used with data collected over multiple time periods for the same units. It controls for unobserved characteristics of those units that do not change over time (e.g., a person's personality or a city's geography).
+Example: Analyzing the effect of local traffic laws on accident rates across different cities by looking only at changes within each city over several years, which controls for permanent differences between the cities.
+
+
+
+# Ads on Homepage A/B Testing — Mock Interview Notes
+
+## Q: How would you evaluate the impact? What metrics would you track?
+A: I would assume the goal is to increase ad revenue while maintaining user experience. The primary metric would be revenue per user or revenue per session. Supporting metrics would include ad impressions and click-through rate to understand user interaction with ads. Guardrail metrics would include retention, engagement metrics like session frequency or bounce rate, and system metrics like latency or crash rate to ensure we are not degrading user experience.
+
+---
+
+## Q: How would you determine sample size and experiment duration?
+A: Sample size depends on significance level (alpha), power, minimum detectable effect (MDE), and variance of the metric. Once the required sample size is determined, experiment duration depends on traffic allocation. The experiment should run until enough samples are collected and should cover natural temporal patterns such as weekday versus weekend behavior.
+
+---
+
+## Q: If the experiment ran for only 3 days and shows significant positive results, what could be wrong?
+A: This could be due to peeking or early stopping, which inflates the false positive rate. The sample size may not be sufficient, making results unstable. Temporal effects like weekday versus weekend differences may not be captured. There may also be novelty effects where users initially react differently. Additionally, short duration may fail to capture long-term effects such as retention or user fatigue.
+
+---
+
+## Q: What else should we be careful about in this ads experiment?
+A: We should check for data quality issues such as heavy-tailed distributions, outliers, bots, and sample ratio mismatch. From a product perspective, ads may negatively impact user experience, so engagement and retention should be monitored. We should consider exposure bias since not all users may see the ads depending on placement. It is also important to analyze heterogeneous treatment effects across user segments. Logging accuracy for impressions and clicks should be validated. Finally, long-term effects such as ad fatigue or retention drops should be considered.
+
+---
+
+## Q: How does regression adjustment help in A/B testing?
+A: Regression adjustment reduces variance by controlling for pre-treatment covariates that explain user behavior differences. This improves statistical power without introducing bias, since randomization already ensures unbiased estimates.
+
+---
+
+## Q: How does regression adjustment improve power?
+A: It reduces the variance of the outcome, which lowers the standard error of the treatment effect estimate. This makes it easier to detect statistically significant effects without increasing sample size.
+
+---
+
+## Q: What is the difference between regression adjustment and regression in observational studies?
+A: Regression adjustment in A/B testing is used to reduce variance since randomization already ensures unbiased estimates. In observational studies, regression is used to control for confounding and obtain unbiased estimates, assuming no unobserved confounders.
+
+---
+
+## Q: If you cannot run an A/B test, what methods would you use?
+A: I would use quasi-experimental methods such as difference-in-differences if I have before-and-after data with a control group, matching or regression to control for observed confounders if treatment is self-selected, or instrumental variables if there is unobserved confounding and a valid instrument is available.
+
+---
+
+## Q: How do instrumental variables isolate causal effect?
+A: Instrumental variables use an external factor that influences treatment but is independent of confounders and affects the outcome only through treatment. This isolates the variation in treatment that is as good as random, allowing causal estimation.
+
+---
+
+## Q: How do DiD, regression/matching, and IV compare?
+A: Difference-in-differences uses time-based changes between treatment and control groups. Regression or matching controls for observed confounders by comparing similar users. Instrumental variables use external variation to handle unobserved confounding, but rely on strong assumptions.
+
+
+Homepage ranking / recommendations:
+time spent, game join rate, sessions per user, retention (D1/D7), CTR on recommendations
+
+Search ranking / discovery:
+search CTR, game join rate, success rate (search → play), time to first play
+
+Game recommendation system (“For You”):
+engagement time, diversity of games played, retention, repeat visits
+
+UI / UX changes (homepage, navigation):
+bounce rate, session length, clicks to key actions, retention
+
+Ads placement / ads section:
+revenue per user (ARPU), impressions, CTR, ad conversion, retention (guardrail), session time
+
+Notifications (push / in-app):
+open rate, CTR, re-engagement rate, sessions per user, retention
+
+Social features (friends, chat, invites):
+messages sent, invites sent, co-play rate, sessions with friends, retention
+
+In-game economy / monetization (Robux, bundles):
+revenue per user, payer conversion rate, average spend, purchase frequency
+
+Creator tools / marketplace changes:
+creator revenue, number of active creators, content uploads, player engagement in new games
+
+Performance improvements (latency, load time):
+session start success rate, time to load, crash rate, session length, retention
+
+Safety / moderation features:
+report rate, moderation actions, user retention, user satisfaction signals 
