@@ -34,7 +34,7 @@
 - Infrastructure (CI CD/scalability)
 - Service
 
-### 5. Evaluation
+### 5. Evaluation 
 
 - Metrics (online vs offline)
 - Monitoring (dashboard tool/notebook itself)

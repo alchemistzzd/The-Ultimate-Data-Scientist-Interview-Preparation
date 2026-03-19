@@ -23,6 +23,30 @@
 
 Fast, iterative environment, 40-50h/week. Every week meeting with CEO to define what to do this week. Everyone has a little feature to work on but also collaborate together on a big project (chatbot right now)
 
+## Round 2 - ML System design
+
+1. Walk through a project, he asked detail questions
+   - what is your role, how did you collaborate with other parties
+   - how did you use llm, since it does not do well at being fed a lot of data
+   - what are the challenges you had tech wise and in general
+
+2. ML design: A data matching and reconciliation problem: bank statement vs internal invoice.
+
+   - how would you use XGboost
+   - what features would you use
+   - if we do not have labeled data, only historical data, how would you use the historical data
+   - if you take top ranked result, applied threshold, what are the risks of this method
+   - how do you do your candidate generation
+   - how would you handle imbalanced data
+
+**What I can improve:**
+
+- can specify my role on a project early on, I led end to end
+- be more organized when explaning the tech details
+- always think of the pros and cons when proposing something
+
+Chatgpt did pretty well in predicting what problem will be asked. That means everyone can do this and be prepared like me. So it's more important to tell your story well and to have fluent communication.
+
 ---
 
 # Parafin
@@ -226,8 +250,14 @@ on b.player_id = s.player_id
 
 
  ## Transcript evaluation
- 
+
  Weaknesses
 	•	Python fluency not strong enough
 	•	Lack of crispness in statistical explanations
 	•	Not proactively adding depth when prompted
+
+**What I can improve:**
+1. SQL forget the syntax for getting today: CURRENT_DATE()
+2. Need deeper understanding of statistics, like deriving a p value from a regression model
+3. Not very familiar with model training python
+4. Answers sometimes scattered
