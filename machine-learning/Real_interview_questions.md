@@ -47,6 +47,47 @@ Fast, iterative environment, 40-50h/week. Every week meeting with CEO to define 
 
 Chatgpt did pretty well in predicting what problem will be asked. That means everyone can do this and be prepared like me. So it's more important to tell your story well and to have fluent communication.
 
+## Round 3 - ML coding
+Rillet ML Coding Interview
+Instructions
+Context
+In accounting, cash reconciliation is the process of comparing a company's internal cash balance (from general ledger, invoices, and expenses) with external records such as bank statements to ensure they match.
+
+A transaction from a bank statement will contain the following fields:
+
+amount
+date
+merchant
+description and we use all of them for the matching.
+In this exercise you will focus on the merchant field and you will implement a preprocessing step to ensure that the data is in good state for matching.
+
+Part 1
+You are given a dataset of bank transactions: "bank_transactions.csv"
+A merchant might appear with different names in different transactions in the dataset. For example "AMAZON MKTPLACE PMTS", "AMZN MKTPLCE 12345", "Amazon.com" and "Amazon" might refer to the exact same merchant.
+Your task is to normalize the merchant names so that every merchant within the dataset will appear with exactly one name. E.g. the merchant for transactions with "AMAZON MKTPLACE PMTS", "AMZN MKTPLCE 12345", "Amazon.com" and "Amazon" will become "Amazon" (or any of the other 3 names).
+Part 2
+You are also given the names of the merchants as defined within Rillet in the dataset "merchants_rillet.csv."
+Produce a new dataset "bank_transactions_preprocessed.csv" where all merchant names from the original dataset are mapped to the respective one in Rillet.
+Part 3
+Evaluation: you are also given a dataset "labeled_data.csv" that contains the correct mapping between the merchant as it appears in a bank transaction and as it shows within Rillet. Use it to evaluate the quality of your pipeline.
+
+
+Chatgpt feedback:
+Your biggest improvement areas for next time:
+	•	Lead with the simplest viable baseline
+	•	Speak in a numbered plan
+	•	Only introduce embeddings/modeling after showing why string rules are insufficient
+	•	When stuck, narrate clearly: “I’m spending too long on this library detail; I’ll switch to a simpler implementation”
+	•	Tie every modeling choice to business error cost
+
+**What I can improve:**
+
+1. Completely caught off guard since interview guide was about implementing a preditive model. But was given a natural language processing task from scratch.
+2. A lot of technical issues. Guide did not say where and said I'm free to use my own platform so I assumed vscode. But interviewer asked me to do a google colab. Then he asked me to share my screen which required me to restart my chrome and left the meeting room. 
+
+
+
+
 ---
 
 # Parafin
@@ -261,3 +302,12 @@ on b.player_id = s.player_id
 2. Need deeper understanding of statistics, like deriving a p value from a regression model
 3. Not very familiar with model training python
 4. Answers sometimes scattered
+
+
+
+# Tonal
+
+## HM
+1. Walk me through a project. 
+2. We are releasing a feature to everyone, how do we measure the if the feature impacts engagement?
+3. The product team wants us to pick a metric for engagment, like duration of workouts, number of workouts, active user number, how would you pick?

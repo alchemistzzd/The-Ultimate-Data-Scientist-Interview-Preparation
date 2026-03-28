@@ -143,3 +143,166 @@ If you use training data to pick hyperparameters, you will always pick the most 
 ---
 
 # Probability Density
+
+
+
+---
+
+# SHAP
+
+Unlike simpler methods that look at a feature in isolation, SHAP calculates the Shapley Value by evaluating a feature across all possible coalitions (subsets) of features.
+
+It measures how much the prediction changes when Feature A is added to a group versus when it is absent.
+
+By averaging these marginal contributions over every possible combination, we account for feature interactions and dependencies that global importance metrics (like Gini importance in Random Forests) often miss.
+
+---
+# Superhuman
+
+## 🧠 1. Core ML Models & Foundations
+
+- What is Logistic Regression?
+   Logistic regression is a linear model used for binary classification that models the log-odds of the outcome as a linear function of the input features. The linear combination is passed through a sigmoid function to produce a probability between 0 and 1. A threshold (commonly 0.5) is then applied to convert the probability into a class label.
+
+   why using log odds?
+   ln(p/1-p) = beta0 + beta1*x1 + beta2*x2
+   Logistic regression models the log-odds because probabilities are bounded between 0 and 1, while a linear model outputs unbounded values. By modeling log-odds, we map an unbounded linear combination to a valid probability via the sigmoid function, while also preserving a linear relationship in the transformed space.
+
+- What’s the loss function?
+   Logistic regression uses log loss (cross-entropy), and is trained by minimizing it using gradient descent or variants like SGD.
+
+- How to train it?
+- How do you choose the hyper parameter?
+   Key hyperparameters are regularization strength (λ or C) and type (L1/L2). These are typically selected via cross-validation.
+
+- How would you explain the difference between linear and logistic regression to a novice?
+- What are the dissimilarities between SVM and Random Forest?
+- Can you explain the underlying assumptions of linear regression, and the importance of taking them into account when interpreting model outcomes?
+- How do bias and variance factor into decision trees? Plus, which one is more problematic - high bias or high variance - and how do you justify that?
+
+## 📊 2. Model Evaluation & Diagnostics
+
+- How do you calculate both precision and recall in a data-driven analysis?
+- Could you elucidate the concept of an ROC curve and the significance of AUC?
+   ROC curve plots True Positive Rate vs False Positive Rate across different thresholds, showing the trade-off between sensitivity and specificity.
+   AUC (Area Under Curve):
+	•	Measures overall ranking ability
+	•	Interpretation: Probability that a random positive is ranked higher than a random negative: AUC = 1.0 → perfect ranking, AUC = 0.5 → random guessing, AUC < 0.5 → worse than random
+	•	Pros: threshold independent, can be used to compare models
+
+- Walk me through the process of differentiating between high variance and high bias in a machine learning model.
+   High bias is indicated when both training and test performance are poor, suggesting the model is too simple and underfitting. High variance occurs when training performance is strong but test performance is poor, indicating overfitting and poor generalization.
+
+- Could you give me some examples of when overfitting and underfitting might occur in real-world scenarios? How do these impact the accuracy and performance of the model?
+
+## ⚙️ 3. Training, Optimization & Regularization
+
+- How to prevent overfitting?
+   Common ways to prevent overfitting include regularization (L1/L2) to control model complexity
+   reducing feature space via feature selection or dimensionality reduction like PCA
+   using proper validation techniques such as cross-validation to ensure generalization
+   Additionally, techniques like early stopping or collecting more data can also help.
+
+- Some people prefer to use grid search CV for hyperparameter tuning, while others prefer random search CV. What are the advantages and disadvantages of each method?
+   Grid Search
+	•	Idea: Try all combinations of predefined hyperparameter values
+	•	Example: learning_rate = [0.01, 0.1], depth = [3, 5] → tries all 4 combos
+   pros:
+   • Exhaustive → guaranteed to test every option
+	• Good for small search spaces
+   cons:
+   • Expensive (combinatorial explosion)
+	• Wastes time on unimportant parameters
+
+   Random Search
+	•	Idea: Sample random combinations from the parameter space
+
+   pros:
+   • More efficient for large/high-dimensional spaces
+	•	Finds good results faster
+   cons:
+   • Not exhaustive
+	•	Might miss exact optimal combo
+
+
+
+- What steps do you take to deal with gradient problems in deep learning, and how do you evaluate their effectiveness?
+   Gradient problems like vanishing and exploding gradients can be addressed using techniques such as proper weight initialization (e.g., Xavier or He), using activation functions like ReLU, applying gradient clipping to control large updates, and using architectures like LSTM or residual connections to improve gradient flow. Batch normalization can also help stabilize training. To evaluate effectiveness, I would monitor training stability, loss convergence, and gradient norms over time, ensuring gradients are neither vanishing nor exploding and that the model trains efficiently.
+
+- What are the roles of batch normalization and dropout in training deep neural networks?
+   Batch normalization stabilizes and accelerates training by normalizing activations within a mini-batch, which helps reduce internal covariate shift and allows for higher learning rates. Dropout, on the other hand, is a regularization technique that randomly deactivates neurons during training to prevent overfitting by reducing reliance on specific features. Together, batch normalization improves training efficiency, while dropout improves generalization.
+
+- Explain L1/L2
+   L1 regularization adds a penalty proportional to the absolute value of weights, which encourages some coefficients to shrink exactly to zero. This effectively performs feature selection by removing less important features.
+   Why L2 does not drive parameters to zero?
+   L2 uses a squared penalty, which shrinks weights smoothly toward zero but doesn’t create sharp corners like L1. Because of this, the optimization rarely drives weights exactly to zero—just very close.
+
+## 🧹 4. Data, Features & Preprocessing
+
+- What constitutes the practice of outlier detection in the field of analytics?
+   Outliers can be handled by detecting them using statistical methods like z-scores or IQR and either removing them or transforming features, depending on whether they represent noise or real signals.
+- What techniques are available for correcting covariate imbalance in machine learning, and in what ways do they bolster the models?
+   Covariate imbalance refers to differences in feature distributions across groups, which can bias models; it can be addressed through reweighting, matching, or stratified sampling.
+- In your opinion, what makes feature selection so significant in the context of machine learning?
+   Feature selection is important because it reduces overfitting, improves interpretability, and speeds up training; common methods include regularization (L1), tree-based importance, or statistical tests.
+- How would you explain the curse of dimensionality and propose a strategy to overcome it?
+   The curse of dimensionality refers to the phenomenon where, as the number of features increases, data becomes sparse and distance metrics become less meaningful, which degrades model performance and increases overfitting risk. To address this, I would use dimensionality reduction techniques like PCA or feature selection to reduce irrelevant or redundant features, improving both model generalization and efficiency.
+
+## 🧭 5. ML Paradigms & Concepts
+
+- Can you articulate the distinctions between supervised, unsupervised, and reinforcement learning paradigms?
+- In your opinion, what is the most crucial aspect of detecting an anomaly in a system or data set?
+
+## 🤖 6. Algorithms & Methods
+
+- Can you please elaborate on how K-means and the Expectation-Maximization (EM) algorithm differ?
+   🔵 K-means
+      •	Type: Hard clustering
+      •	Assumption: Clusters are spherical, equal variance
+      •	Assignment: Each point belongs to one cluster only
+      •	Objective: Minimize within-cluster squared distance
+
+   Steps:
+      1.	Assign points to nearest centroid
+      2.	Update centroids (mean of assigned points)
+
+   ⸻
+
+   🟣 EM (Gaussian Mixture Models)
+      •	Type: Soft clustering (probabilistic)
+      •	Assumption: Data comes from a mixture of Gaussians
+      •	Assignment: Each point has probability for each cluster
+      •	Objective: Maximize likelihood of data
+
+   Steps:
+      1.	E-step: Compute probabilities (responsibilities)
+      2.	M-step: Update parameters (mean, covariance, weights)
+
+   K-means performs hard clustering where each data point is assigned to a single cluster based on distance to centroids. EM, typically used with Gaussian Mixture Models, performs soft clustering by assigning probabilities of belonging to each cluster. Additionally, K-means is distance-based, while EM is a probabilistic generative model that maximizes likelihood.
+
+- Could you give an overview of how collaborative filtering is used in ML applications?
+   Collaborative filtering is used in recommendation systems to predict a user’s preferences based on the behavior of similar users or items. It assumes that users who behaved similarly in the past will have similar preferences in the future. There are two main approaches: user-based filtering, which finds similar users, and item-based filtering, which finds similar items. More advanced methods use matrix factorization to learn latent features representing users and items.
+- Please tell me about the role of CNNs and where they are typically applied.
+   Convolutional Neural Networks (CNNs) are designed to process grid-like data by using convolutional filters to automatically learn spatial hierarchies of features, such as edges, textures, and shapes. They are efficient because they use parameter sharing and local connectivity, which reduces the number of parameters compared to fully connected networks. CNNs are primarily applied in computer vision tasks like image classification, object detection, and segmentation, but are also used in areas like video analysis and even NLP for capturing local patterns in text.
+
+## ⏳ 7. Time Series
+
+- Could you discuss some common methods used in Time Series Forecasting?
+- In time series analysis, what other models could be used in place of ARIMA?
+
+## 🧠 8. Deep Learning (Attention)
+
+- Can you break down the notion of an attention model?
+- Could you expand on the concept of attention mechanisms in neural networks?
+
+## 📝 9. NLP
+
+- What is word embedding?
+- Tell me some broadly used word embedding algorithm
+- Can you introduce them a bit?
+- How to train a word2vec model?
+
+## 💻 10. Coding / Practical
+
+- Is there a technique you use to extract all English words from a string of characters? If so, please share
+- How would you go about programming a function that models a normal distribution and plots it?
