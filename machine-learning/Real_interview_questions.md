@@ -304,6 +304,348 @@ on b.player_id = s.player_id
 4. Answers sometimes scattered
 
 
+## HM
+Questions asked:
+1. Tradeoffs you made with the Flux Analysis project
+2. Strength and weaknesses
+3. Global model how does neural prophet work if different accounts join differently in timing
+4. Pipelines of flux model from data ingestion
+5. How would you use the macroeconomics features
+6. How do you know if it's the current value or lagged value of a metrics is contributing to the forecast target
+
+## Coding
+We want to build a production model that predicts on every snapshot_date=ds, and 
+
+for every monthly active user (MAU = active at least once in window [ds - 28d, ds]), 
+
+their total future 12-month revenue from the snapshot_date forward. 
+
+
+(a) How do you define the label?
+
+(b) How do you build a sample for your training data? 
+user a, 2025-01-01-2025-01-31, 2025-02-01-2025-12-31
+
+
+
+
+snapshot date = '2026-01-15'
+MAU = active at least once in the window ['2026-01-15' - 28d, '2026-01-15']
+
+
++++++++++++++++++++++++++++++
+
+Problem set up: We have the following two source tables. 
+
+Task: Generate the following features for 365 snapshot dates between 2023-01-01 and 2023-12-31, across 50M MAUs, for each MAU–snapshot_date pair. 
+Keep Scale Optimization in Mind. 
+- revenue_last_28d: Revenue in [ds-28, ds-1]
+- days_since_last_purchase_28d: Days from last purchase within 28d before ds
+
+ds = snapshot_date
+MAU = every monthly active user (MAU = active at least once in window [ds - 28d, ds])
+
+-- Source table 1: Fact table: User activity events (50 BILLION rows) partitioned by event_date
+CREATE TABLE fct_user_events (
+    user_id BIGINT,
+    event_date DATE,  
+    event_type VARCHAR(50),  --- 'chat', 'purchase', 'play', etc.
+    revenue DECIMAL(10,2),--- NULL for non-purchase events
+    session_id VARCHAR(100), 
+...
+);
+
+
+-- Source table 2: Partitioned by signupevent_date, ~100M events/day
+CREATE TABLE dim_users (
+    user_id BIGINT,
+    signup_date DATE,
+);
+with snapshot_period as
+(
+    select
+    event_date,
+    event_date - interval '28 days' as start_date
+    user_id,
+    sum(case when event_type = 'purchase' then revenue else 0 end) as  daily_revenue,
+    max(event_date) over(partition by user_id) as last_purchase_date
+    from fct_user_events
+    where event_date between date(2023-01-01) - interval '28 days' and date(2023-12-31)
+    group by event_date, user_id
+),
+feature_t
+
+
+user a, 2023-01-01, revnu in last 28d, days_since_last_purchase_28d
+user a, 2023-01-02, revnu in last 28d, days_since_last_purchase_28d
+
+
+
++++++++++++Python 
+Question: Design a production pipeline of this revenue model. 
+Describe:
+- A very brief architectural design of the modules
+- Data schema and the types of data input validations you would do
+- Error handling ?
+
+
+
+
+"""
+TODO: This pipeline has several issues. Fix them and add best practices:
+a..Add data contracts for features and predictions
+b. Validate input. Validate output before writing to production
+c. Add proper error handling
+d. Add logging
+Bonus:
+atomic write to staging table
+"""
+
+import pandas as pd
+import joblib
+from datetime import datetime
+
+# ============================================================================
+# ISSUE 1: No data contracts defined
+# ============================================================================
+
+# TODO: Define these classes: FeatureContract and PredictionContract
+# specifying rules around the expected data inputs.
+
+
+# ============================================================================
+# ISSUE 2: No validation function
+# ============================================================================
+
+# TODO: Implement validate_data(df, contract) function
+# What checks should it perform?
+
+
+# ============================================================================
+# PIPELINE MODULES
+# ============================================================================
+
+class FeaturePipeline:
+    """Load features"""
+    
+    def __init__(self, snapshot_date: str):
+        self.snapshot_date = snapshot_date
+    
+    def run(self):
+        # ISSUE 3: No error handling
+        try:
+            df = pd.read_parquet(f"s3://features/{self.snapshot_date}.parquet")
+        Except:
+            return 'path does not exist'
+        
+        # ISSUE 4: No validation - what if features are corrupted?
+        if df.dropna().shape[0] <df.shape[0]:
+            df.fillna()
+        try:
+            for col in df.columns:
+                if df[col].isna():
+                    df = df.drop(col)
+                    break
+        Except:
+            return 'feature {} is missing'.format(col)
+        
+        return df
+
+
+class ModelPipeline:
+    """Load model and generate predictions"""
+    
+    def __init__(self, model_version: str = "latest"):
+        self.model_version = model_version
+        self.model = None
+    
+    def load_model(self):
+        # ISSUE 5: No error handling
+        model_path = f"s3://models/revenue_predictor/{self.model_version}/model.pkl"
+        try: 
+            self.model = joblib.load(model_path)
+        except:
+            print('model path invalid or job failed during loading')
+        return True
+    
+    def predict(self, features_df):
+        # ISSUE 6: What if features have nulls? Model will crash
+        X = features_df[['revenue_last_28d', 'revenue_last_90d', 
+                         'active_days_last_28d', 'days_since_signup']]
+        
+        
+        predictions = self.model.predict(X)
+        
+        output_df = pd.DataFrame({
+            'user_id': features_df['user_id'],
+            'snapshot_date': features_df['snapshot_date'],
+            'predicted_revenue_12mo': predictions
+        })
+        
+        return output_df
+
+
+class OutputPipeline:
+    """Write predictions"""
+    
+    def run(self, predictions_df, snapshot_date: str):
+        # ISSUE 7: Direct overwrite - what if predictions are bad?
+        output_path = f"s3://predictions/revenue_12mo/snapshot_date={snapshot_date}"
+        if predictions_df.isna():
+            return 'prediction is null'
+            
+        predictions_df.to_parquet(output_path, mode='overwrite')
+        
+        print("Predictions written")
+        return True
+
+
+# ============================================================================
+# MAIN ORCHESTRATOR
+# ============================================================================
+
+class RevenuePredictionPipeline:
+    """Main pipeline orchestrator"""
+    
+    def __init__(self, snapshot_date: str):
+        self.snapshot_date = snapshot_date
+    
+    def run(self) -> bool:
+        # ISSUE 9: No error handling - one failure breaks everything
+        # ISSUE 10: No logging - can't debug failures
+        try:
+            # Load features
+            print('building feature Pipeline')
+            feature_pipeline = FeaturePipeline(self.snapshot_date)
+            features_df = feature_pipeline.run()
+            
+            # Load model
+            print('loading models')
+            model_pipeline = ModelPipeline(model_version='latest')
+            model_pipeline.load_model()
+            
+            # Generate predictions
+            print('making predictions')
+            predictions_df = model_pipeline.predict(features_df)
+            
+            # Write output
+            print('writing output')
+            output_pipeline = OutputPipeline()
+            output_pipeline.run(predictions_df, self.snapshot_date)
+        except error as e:
+            print('error message', e)
+        
+        return True
+
+
+# ============================================================================
+# ENTRY POINT
+# ============================================================================
+
+if __name__ == "__main__":
+    import sys
+    snapshot_date = sys.argv[1]
+    
+    pipeline = RevenuePredictionPipeline(snapshot_date)
+    pipeline.run()
+
+Answer: adding data contracts 
+
+from dataclasses import dataclass
+
+@dataclass
+class FeatureContract:
+    """Expected schema and constraints for features"""
+    required_columns = [
+        'user_id', 'snapshot_date', 'revenue_last_28d', 
+        'days_since_last_purchase_28d'
+    ]
+    
+    non_nullable = ['user_id', 'snapshot_date', 'revenue_last_28d', 
+                   ]
+    
+    value_ranges = {
+        'revenue_last_28d': (0, 1_000_000),
+           }
+    
+    expected_row_count = (5_000_000, 20_000_000)
+
+@dataclass
+class PredictionContract:
+    """Expected schema and constraints for predictions"""
+    required_columns = ['user_id', 'snapshot_date', 'predicted_revenue_12mo']
+    
+    non_nullable = ['user_id', 'snapshot_date', 'predicted_revenue_12mo']
+    
+    value_ranges = {
+        'predicted_revenue_12mo': (0, 100_000)  # No negatives
+    }
+
+
+
+## case study
+
+1. Prophet parameter for trend and growth
+2. To predict each user's probability of purchasing in next 7 days, preverence of purchase is 2% in overall population
+3. Time series on global DAU for next 90 days, steady upward trend
+4. 40% dau surge on an event date, how do you know if it is due to event or model failing
+
+
+
+**What I can improve:** 
+1. align fast instead of jumping to solution fast
+2. answer in the same depth level, only go deeper when probed, be crisp
+3. I should not focus on showing off how much do I know
+4. I was trying hard to match back to anything I've prepared. But this harmed me but confusing myself with the question.
+5. Practice on mostly AI based content with repetitive mock that limited my thinking and turned my focus to memorizing.
+6. Interviews reward: polished execution, not just real ability
+7. Be decisive in picking a path and dive deep in
+
+What I did well:
+I listed a lot of tradeoffs! Did thorough product search and gave a few very Roblox specific product insights.
+
+
+
+# Uber
+## BPS2
+Questions asked:
+1. Walk me through a project
+2. New feature wait and save,
+    1) why are we launching it?
+        1. Why does it help with matching?
+        2. Why does it help with driver supply?
+        3. incremental 
+
+    2) we did experiment but no difference in number of completed trips, what could be the reason?
+        1. low adoption/exposure due to: rider choice, feature not compelling
+        2. positive and negative offset
+        3. only mix of ride types changed, but did not increase new trips
+        4. supply side bottleneck still dorminates
+        5. matching gain was too small
+        6. metrics issue
+
+**What I can improve:**
+1. Had structure but did not have a brief reason/mechanism for each point
+2. Need an anchor for each answer - decisive
+
+
+A feature is launched, metric A dropped - framework
+1. Validate the metric and data
+First, I confirm whether the drop is real—checking metric definitions, logging changes, and pipeline issues to rule out measurement errors.
+
+2. Localize the issue
+I break the metric down by key segments—such as user cohorts, geography, device type, or new vs. existing users—to identify where the drop is concentrated.
+
+3. Diagnose the root cause
+Then I analyze the user journey or funnel to pinpoint where behavior changed, and investigate whether the feature introduced friction, confusion, or unintended side effects.
+
+4. Assess broader impact
+Finally, I look at related metrics—like engagement, revenue, and system performance—to understand trade-offs and whether the issue is isolated or systemic.
+
+Based on this, I can form hypotheses and decide whether to roll back, iterate, or run further experiments.”
+
+
+
 
 # Tonal
 
@@ -311,3 +653,190 @@ on b.player_id = s.player_id
 1. Walk me through a project. 
 2. We are releasing a feature to everyone, how do we measure the if the feature impacts engagement?
 3. The product team wants us to pick a metric for engagment, like duration of workouts, number of workouts, active user number, how would you pick?
+4. How did you support a KPI project? Why do you train your model monthly?
+5. When it comes to data viz, what are you principles when presenting to non technical audiances?
+
+
+# Superhuman
+
+## ML
+
+logisitic regression:
+how to you explain it?
+what is the bias term?
+what is the bias term used for?
+how do you pass the linear combination of features to sigmoid?
+decision boundaries for logistic regression?
+Why would you use L2 over L1 regularization?
+Do you need to normazlie for logistic regression, if not what is the conceuqeunces?
+   - Different feature scales distort the optimization landscape, making gradient descent inefficient.
+   - Without normalization, regularization penalizes features unevenly, which can distort feature importance.
+
+Class imbalance:
+what is the risk?
+if we use precision, recall and f1 does class imbalance not matter?
+
+
+Word Segmentation
+Description
+Word Segmentation
+Given a string without whitespaces, and avocabulary, write a function that splits thestring into words.
+For example, given the string
+helloworld!
+and the vocabulary
+['he'，'hell'，'hello'，'low',
+world'，'!']，
+your function should return the list
+['hello'，'world'，'!'].
+Edge cases
+ If there are multiple ways to split a
+string, your function should return thelist with the least number of words.
+ The string is not guaranteed to besplittable. In cases it is not, your functionshould return an empty list.
+ If the string is empty, your function
+should return an empty list.
+
+
+**What I can improve:**
+1. OMG it is the same LC problem I see people posting online, but I did not see all the questions...
+
+Feedbacks:
+1. Medium on both ML and coding
+2. Logistic - input feature norm does not matter, and it can model non linear using log; incorrect statement
+3. Coding - not multiple ways to break work, storing not initiated, implementation
+
+
+
+
+# Apple
+
+## Coding screen
+
+How do you evaluate A vs B:
+	Image_id	ground_truth	prediction_A	confidence_score_A	prediction_B	confidence_score_B	lighting	distance
+1	1	1	1	0.472	0	0.012	Extremely_low	1
+2	2	1	1	0.412	0	0.018	Extremely_low	1
+3	3	1	1	0.638	0	0.012	Extremely_low	1
+4	4	1	1	0.499	0	0.018	Extremely_low	1
+5	5	1	1	0.485	1	0.591	Extremely_low	1
+6	6	1	1	0.564	0	0.145	Extremely_low	5
+7	7	1	1	0.495	0	0.183	Extremely_low	5
+8	8	1	1	0.312	1	0.508	Extremely_low	5
+9	9	1	1	0.489	0	0.203	Extremely_low	5
+10	10	1	1	0.434	1	0.501	Extremely_low	5
+11	11	1	1	0.523	0	0.182	Extremely_low	10
+12	12	1	1	0.221	0	0.084	Extremely_low	10
+13	13	1	0	0.435	0	0.284	Extremely_low	10
+14	14	1	0	0.698	1	0.522	Extremely_low	10
+15	15	1	1	0.7	1	0.564	Extremely_low	10
+16	16	1	0	0.793	1	0.589	Extremely_low	20
+17	17	1	0	0.682	1	0.501	Extremely_low	20
+18	18	1	1	0.632	1	0.592	Extremely_low	20
+19	19	1	0	0.446	1	0.523	Extremely_low	20
+20	20	1	0	0.511	1	0.632	Extremely_low	20
+
+
+## HM
+Questions:
+1. Tell me about yourself
+2. Where is your interest?
+3. Why did you leave?
+4. Are you more tradition ML or LLM? 
+5. What is your career expectation? 
+6. How comfortable you are with Python?
+Her team:
+Infrastructure eng + ds 
+LLM-as-a-judge + agentic system eval + simulator + evaluator + golden dataset
+Run evaluation on their pipeline, labeling, define core values and inform labelers.
+Iterations, scaling 
+Scenario based simulations
+Ater critical steps stops human labeling
+
+**improvements**
+1. Structure every answer
+2. Be more decisive
+3. Make your project concrete
+
+# Drata
+
+## HM
+Questions asked:
+1. What are your biggest strength and weaknesses?
+2. How did you create the golden dataset?
+3. If there is no human review, how would you evaluate the flux model?
+4. What feedback did you get changed the way you work?
+5. What feedbacks you get you disagreed with?
+6. How did you design the MVP?
+7. Why are you looking to leave Autodesk?
+
+
+**improvement**
+You tended to:
+	•	ramble
+	•	repeat ideas
+	•	lose crispness
+
+Example:
+	•	Watchdog explanation
+	•	Flux explanation
+
+👉 You had strong content, but:
+
+signal got diluted
+---
+You said:
+	•	“chunking, retrieving, storage”
+	•	“learned a lot”
+
+But you did NOT clearly say:
+	•	how you chose chunk size
+	•	what embedding model
+	•	how you improved retrieval
+	•	trade-offs
+
+👉 For this role:
+
+this is a major gap
+
+---
+🔴 3. Evaluation answers were fuzzy
+
+Your evaluation answer:
+	•	“compare to analyst”
+	•	“human review”
+	•	“golden dataset”
+
+👉 But missing:
+	•	concrete metrics
+	•	how accuracy measured
+	•	failure cases
+
+👉 Felt:
+
+hand-wavy instead of rigorous
+
+⸻
+
+🔴 4. Not enough “decision clarity”
+
+You described WHAT you did, but not always:
+	•	why this approach vs alternatives
+	•	what trade-offs you considered
+
+⸻
+
+🔴 5. Weak concise storytelling
+
+Your MVP story was good, but:
+
+👉 Took too long to land key point
+
+Strong version should be:
+	•	problem
+	•	solution
+	•	impact (numbers)
+
+
+1. Problem
+2. Approach
+3. Trade-offs
+4. Impact
