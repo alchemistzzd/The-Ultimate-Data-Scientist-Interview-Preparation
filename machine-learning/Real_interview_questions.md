@@ -604,6 +604,14 @@ class PredictionContract:
 What I did well:
 I listed a lot of tradeoffs! Did thorough product search and gave a few very Roblox specific product insights.
 
+**feedbacks**
+1. pros: good coding, interesting project, took feedbacks well
+2. cons: python handling exception part, forecasting model part, some communications might go into the weeds
+    - went too deep into details too early or unnecessarily
+    - need to focus more on business big picture first
+    - You used more words than needed to make your point
+    - Hard to extract the key idea
+
 
 
 # Uber
@@ -645,6 +653,49 @@ Finally, I look at related metrics—like engagement, revenue, and system perfor
 Based on this, I can form hypotheses and decide whether to roll back, iterate, or run further experiments.”
 
 
+## BPS1
+
+def reverse(input):
+    
+    res = []
+    n = len(input)
+    if n == 0:
+        return []
+    for i in range(n-1, -1, -1): #O(n)
+        res.append(input[i])
+    return res
+
+def reverse2(input):
+    n = len(input)
+    if n == 0:
+        return []
+
+    for i in range(round(n/2)):
+        temp = input[n-i-1]
+        input[n-i-1] = input[i]
+        input[i] = temp
+        
+    return input
+    
+
+
+
+
+print(reverse2([1,-2,3,5,0]))
+
+
+program rider referral
+
+rider referral: existing user refer new user, both get bonus for signup also first 5 trips
+
+goal: more new users
+
+compaign 10% discount
+
+10/user, 7/user
+10-7
+
+
 
 
 # Tonal
@@ -655,6 +706,87 @@ Based on this, I can form hypotheses and decide whether to roll back, iterate, o
 3. The product team wants us to pick a metric for engagment, like duration of workouts, number of workouts, active user number, how would you pick?
 4. How did you support a KPI project? Why do you train your model monthly?
 5. When it comes to data viz, what are you principles when presenting to non technical audiances?
+
+## Tech 1
+1. PCA does it need normalization
+2. he give me a plot with x axis monthly runing volumne, y axis marathon time, and said they fitted a piece wise two linear regression up to median of x, and conclude that people should only run up to that median point, not running any more than that. How do I feel about their way of forming that recommendataion
+
+## Tech 2
+import numpy as np
+import pandas as pd
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+
+df = pd.read_csv('/home/coderpad/data/tonal_chatbot_experiment_small.csv')
+
+print(df.head())
+
+# 2,000 users
+# 21 days
+# 50% assigned to treatment (chatbot access)
+# 50% assigned to control (no access)
+# Not all treatment users actually used the chatbot (imperfect compliance)
+# Each row is a user-day
+
+
+
+# Does chatbot access increase the likelihood that a user works out on a given day?
+def p_value_daily(date):
+    df_date = df[df['date'] == date]
+    treatment_mean = np.mean(df_date[df_date['treatment_group'] == 1]['did_workout'])
+    control_mean = np.mean(df_date[df_date['treatment_group'] == 0]['did_workout'])
+
+    treatment_ste = np.sqrt(np.var(df_date[df_date['treatment_group'] == 1]['did_workout']))
+    control_ste = np.sqrt(np.var(df_date[df_date['treatment_group'] == 0]['did_workout']))
+
+    z = (treatment_mean - control_mean)/np.sqrt(treatment_ste/1000+control_ste/1000)
+    # p_value = np.getpvalue(z)
+    return z
+
+p_values = [p_value_daily(day) for day in df['date'].unique()]
+print(p_values)
+
+# Now imagine we discover a bug:
+# Premium members were more likely to be assigned to treatment.
+# Assignment is no longer random.
+# How would this bug change your previous answer?
+initial treatment, initial control
+output: prob
+new treatment, new control
+d1 diff = mean(did_workout) for treatment - mean(did_workout) for control
+d2 diff
+
+I lost you on Zoom :/
+
+**Solutions**
+1. Propensity score matching - step by step
+- First, propensity score cannot be used if there was no treatment happened before. Since it needs to learn from real exposure.
+
+
+# TCP
+Profound - 150ppl
+30-40 eng; 3-4 ds, machine learning
+
+
+# Servicenow
+## HR
+
+1. How much of your time is systems ownership vs modeling / reasoning / evaluation?
+2. In practice, does no handoff mean owning internal tools and pipelines, or also owning service reliability and on-call?
+3. What differentiates a strong performer in this role — is it more about system reliability or insights/model quality?
+4. What are the most common ways projects in this space fail — is it around data quality, adoption, or system reliability?
+
+# Windfall
+## HM
+- customer facing, user adoption, directly drives decisions
+1. For a typical propensity or lead scoring model here, what parts of the lifecycle would I own end-to-end?
+    data issue, feature less for commercial, down market, need feature space,
+    identify features, feature engineering, 
+2. What is the biggest challenge? improving model performance or scaling the systems behind them?
+
+The team needs:
+1) better feature engineering for the scoring models
+2) customer enabaled modeling automation
 
 
 # Superhuman
@@ -768,6 +900,22 @@ Questions asked:
 6. How did you design the MVP?
 7. Why are you looking to leave Autodesk?
 
+## Architecture design
+Imagine McDonald’s does not have any sort of Kiosk ordering system and wanted to implement brand new, AI-First, self-service order kiosks in all their locations. The goal is to enhance customer experience and increase operational efficiency. The new system should allow customers to place orders through these kiosks, it must integrate seamlessly with the current operations of the restaurant, and it must utilize AI in ways that make sense to accomplish the previously stated goals.
+
+To simplify the problem a bit, you can assume the restaurant already has some way to accept payments, send orders to the kitchen, etc, and that all of these systems have very nice REST APIs for you to interact with.
+
+Your task is to both come up with at least 3 ways AI could improve the basic ordering Kiosk, and then design an end-to-end architecture for this new AI enhanced Kiosk system. Keep in mind that your design should be scalable, reliable, and secure, and it should efficiently manage data across various systems and components.
+
+We're looking for a high-level design, and we want to understand your thought process, decision-making, and the trade-offs you might make in designing such a system. Feel free to make any other assumptions as necessary, but be sure to state them.
+
+Take a few moments to think about the problem, and please ask us questions before you start designing the system, we're here to help.
+
+**improvement**
+rushing into rag based llm without exploring ml yet. trying to pull solution towards what I prepared for.
+i need to do a few ml system design practice with both classification and prediction
+
+
 
 **improvement**
 You tended to:
@@ -840,3 +988,80 @@ Strong version should be:
 2. Approach
 3. Trade-offs
 4. Impact
+
+
+# Apple
+
+## R2
+1. What data would you use for the Apple vision pro hand gesture feature?
+2. If there is a very edge case, how would you know that that data point is out of distribution?
+3. How would you decide the sample size is sufficient enough for evaluation? What is the equation you would use?
+4. What did you make sure your model is doing well? How do you know your model is improving?
+
+
+# Laurel AI
+Laurel is an AI-powered timekeeping product for professional services firms (law + accounting). When a timekeeper uses Laurel, they can create time entries in multiple ways:
+
+Using Laurel’s AI suggestions (called "work groups") to create entries
+Using Laurel's captured Activities to create entries
+Timers / Manual: fall back to more traditional time entry patterns
+We call (1) and (2) Laurel's "Core Workflow" in that both methods involve the user using Laurel captured activities to create entries. However, ideally, Laurel's AI can automatically construct a "perfect" entry and the user accepts as-is.
+
+The goal of this exercise is an example user retention / churn analysis.
+
+You have access to the following tables
+
+users: This is the core table unique at the user_id level. Data has already been pulled so that for each user you observe, which customer they're associated with, vertical, and Laurel Usage statistics (i.e. Creating and Releasing Entries). The fields are:
+user_id – Unique identifier for a user
+customer_id – Unique identifier for the firm/customer the user belongs to
+vertical – Industry vertical the customer operates in (e.g., legal, accounting)
+customer_segment – Business segmentation for the customer
+customer_mandated_usage_flag – Indicates whether the firm required users to use the product
+user_role – Role of the user (e.g., Timekeeper vs Admin)
+first_activation_date – Date the user first activated their account
+first_entry_created_date – Date the user first created a time entry
+first_core_workflow_work_date – First date the user engaged with the product’s “core workflow”
+total_entries_created_d3 – Count of all entries the user created within their first 3 days
+total_core_workflow_entries_created_d3 – Count of core-workflow entries created in the first 3 days
+total_entries_created_timers_d3 – Count of timer-based entries created in the first 3 days
+total_entries_created_manual_d3 – Count of manually created entries in the first 3 days
+total_entries_released_d3 – Total entries released (finalized) within the first 3 days
+total_core_workflow_entries_released_d3 – Core workflow entries released within 3 days
+total_entries_released_timers_d3 – Timer-based entries released within 3 days
+total_entries_released_manual_d3 – Manually created entries released within 3 days
+user_attempted_core_workflow_flag – Boolean flag indicating whether the user ever tried the core workflow
+user_churned_core_workflow_flag – Boolean flag indicating whether the user churned from the core workflow
+user_churned_flag – Boolean flag indicating whether the user churned from the product overall. In this case, churn is simplistically defined to be 1 if the user did not release any entries after their 31th day after activation, else 0.
+metrics_automation_score: Indicates whether the user accepted a GenAI Narrative perfectly on their entry on that day
+user_id – Unique identifier for a user
+work_date – Date of Work
+genai_narrative_accepted_flag – equal to 1 if the user accepted a perfect GenAI Narrative on that day. Note, this table only includes the "1s". If the user did not accept a perfect GenAI Narrative (even if the generated narrative was partially accepted), those days will not show up for that user in this table.
+
+You can assume that this data was pulled on January 5th, 2026.
+
+
+
+In the users table:
+
+Count how many rows have first_activation_date is null.
+Filter out rows where first_activation_date is null.
+The customer with customer_id == '63f8bbd6e1e1ec7267b08ee1' not only mandates Laurel usage but also has special tailored trainings during onboarding.
+Create a new column customer_mandated_usage_detail_flag with values:
+"Not Mandated Usage" if there is no customer mandated usage
+"Mandated Usage -- Special Trainings" if customer_id = '63f8bbd6e1e1ec7267b08ee1' and the customer is mandated
+"Mandated Usage -- No Special Trainings" for all other mandated customers
+Create a new column attempted_core_workflow_d3_flag which is:
+1 if the user created at least 1 core workflow entry in the first 3 days
+0 otherwise
+What percentage of users who attempted core workflow in their first 3 days churned vs users who did not attempt the core workflow in their first 3 days?
+Now, specifically for customer_id = '63f8bbd6e1e1ec7267b08ee1', we want to understand whether there is a correlation between the user accepting at least one GenAI Narrative and whether they have churned. Join with metrics_automation_score to determine whether each user for customer_id = '63f8bbd6e1e1ec7267b08ee1' accepted at least one GenAI narrative in the first 3 days after activation. What is the churn rate of users who accepted at least one GenAI Narrative in the first 3 days after activation compared to those who did not?
+
+
+Moveworks:
+1. case study
+You're a Data Scientist at Spotify. As a reminder, the main feature of the app is to play music or podcasts, but users can also create/modify playlists and subscribe to playlists created by other users. There is a free version of the app where users have to listen to ads in between songs and cannot decide the order of songs, and a paid version without such limitations. The Head of Product wants to better understand how users are engaging with the platform and has asked you to define the key metrics. Over the course of this interview, we'll walk through how you'd go from defining those metrics all the way to building the data infrastructure to support them.
+
+- How would you measure the success of Spotify's product? What key metrics would you define and track?
+- Now pick 2-3 of these metrics and design the data tables you'd need to compute them. Please share your screen and sketch this out — table names, columns, primary keys, and foreign keys.
+- Now that you've designed these tables, let's talk about where the data comes from. What events would need to be logged to populate these tables, and where in the system would you emit them?
+- Let's zoom out. Can you sketch a high-level data flow — how do these events go from being emitted in the app to being queryable in the tables you designed?
