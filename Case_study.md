@@ -1,5 +1,6 @@
 # Case study how to answer?
 
+## 1 Measure success
 1. Clarifying questions: (What it does? How is it used? Who is it for?)
     - I assume the goal is..., right?
     - How excatly is the metric defined?
@@ -11,18 +12,68 @@ Use cases of the product (private event vs public, small group vs large, view vs
 
 https://www.1point3acres.com/bbs/thread-780970-1-1.html
 
-2. High level framework
-    - like giving a table of contents, does that direction make sense?
+2. First answer (by modular with mini pause)
+    - High level framework： like giving a table of contents, break this into ... and start by defining metrics (does that sound good?)
+    - Metrics
+        - My primary metrics(success metrics, directly tied to the feature) would be ...(be specific to the user journey level)
+        - Supporting metrics that explain or influence the primary metric are ...
+        - Guardrail metrics that we do not want to hurt are ...
+
+3. Validate
+Design experimentation
+
+
+
+
+
+
+
+## 2 Diagnose a change
+1. Clarifying questions: (where and how much did the change happen)
+    - How is the metric defined?
+    - Time: sudden or progressively?
+        - internal (data source, data collection, pipeline bug)
+        - external (seasonality, industry trend, competitors, event, natural disaster)
+    - Where and when did the change happend? Specific user segment/time/geo/senario?
+    - Which stage in user funnel did it happen?
+    - Other features/product change/launch? Similar change in related products?
+(Optional: decompose the metrics, eg. DAU = existing + new + recurrected - churn)
+2. Generate hypothesis (Demand/supply/matching/price)
+3. Validate
+    - quantify X's impact on Y by looking at Y across different X buckets, compare before vs after to see if the relationship shifts
+4. Fix
+
+## 3 Launch or not
+1. Clarifying questions: 
+    - What is the goal of launching this feature?
+2. Metrics
+    - My primary metrics(success metrics, directly tied to the feature) would be ...(be specific to the user journey level)
+    - Supporting metrics that explain or influence the primary metric are ...
+    - Guardrail metrics that we do not want to hurt are ...
+3. Evaluate impact
+    - primary prove by how much, both statistically and practically significant?
+    - link result to business goal (feature lift translate to business impact, also consider cost)
+4. Check tradeoffs
+    - conflicting result (translate impact to user and business) ?
+    - Short-term vs long-term
+
+
+
 
 3. Going deeper
     - Controlled exploration by layer
     - Hypothesis driven
     - Tradeoff awareness
-
-
 4. You need to have a default hypothesis template for Uber
 
-5. Fare
+
+
+
+
+
+
+# Uber product space
+## Fare
 - Rides: 
     - Demand: riders
     - Supply: drivers
@@ -31,10 +82,10 @@ https://www.1point3acres.com/bbs/thread-780970-1-1.html
     - Supply 1: delivery drivers
     - - Supply 2: restaurants
 
-6. Uber metrics collection
+##  Uber metrics collection
 - ratio of buyers to sellers
 
-7.?
+## ?
 - How would I know what funnel stages? For defining metrics
 - North Star metric? Success metric has to be oppostie? how about guardrail?
 	•	North Star (behavior change):
@@ -51,7 +102,7 @@ https://www.1point3acres.com/bbs/thread-780970-1-1.html
 
 
 
-7. BPS questions
+## BPS questions
 Case / Experimentation (Rider Referral)
 	•	How would you design an experiment for a rider referral feature?
 	•	Would you use A/B testing or something else?
